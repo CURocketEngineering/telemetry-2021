@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<script src="{{ url_for('static', filename='js/jquery/jquery.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/socketio/socket.io.slim.js') }}"></script>
+	{% block script %}
+	{% endblock %}
+  </head>
+  <body>
+	{% block content %}
+	<div id="template_div">
+	</div>
+	{% endblock %}
+  </body>
+  <footer>
+	{% block foot %}
+	{% endblock %}
+  </footer>
+</html>
