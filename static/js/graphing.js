@@ -9,6 +9,7 @@ function request_data() {
 
 function receive_data(data) {
 	console.log("data received", data);
+	add_data_to_chart(data);
 	$("#testing").text($("#testing").text()+"?");
 }
 

@@ -1,18 +1,19 @@
 {% extends "template.html" %}
 
-
 {% block script %}
 <script src="{{ url_for('static', filename='js/data.js') }}"></script>
+<script src="{{ url_for('static', filename='js/charting.js') }}" defer></script>
 <script src="{{ url_for('static', filename='js/graphing.js') }}" defer></script>
 {% endblock %}
 
 {% block content %}
-<p id="testing">
-</p>
+<div id="content-wrapper">
+    <div id="chart-wrapper">
+        <canvas id="canvas"></canvas>
+    </div>
+</div>
 {% endblock %}
 
 
 {% block foot %}
-
 {% endblock %}
-

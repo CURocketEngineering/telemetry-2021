@@ -21,6 +21,7 @@ socketio = SocketIO(app, logger=True)
 
 rocket_data = data.DataHandler(False, is_sim=True)  # DEBUG
 update_data_thread = Thread(target=data.update_data, args=(rocket_data,))
+update_data_thread.daemon = True
 update_data_thread.start()
 
 
