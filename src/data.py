@@ -3,7 +3,7 @@ from datetime import datetime
 from threading import Lock
 from copy import deepcopy
 
-DATAFILE = "test/data/sim_irec2019.json"
+DATAFILE = "uploads/sim_irec2019.json"
 SIM_DT = .25
 
 empty_data = {
