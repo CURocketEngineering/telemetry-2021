@@ -88,6 +88,10 @@ var alt_config = {
 };
 
 function add_data_to_charts(data) {
+	if (Object.keys(data).length === 0) {
+		console.log("No data yet");
+		return;
+	}
 	for (let i = 0; i < data.time.length; i++) {
 		// Gyroscope
 		gyro_config.data.labels.push(data.time[i]);
@@ -109,19 +113,23 @@ function add_data_to_charts(data) {
 }
 
 function clear_charts() {
-    gyro_config.data.labels = [];
-    gyro_config.data.datasets.forEach( (dataset) => {
-        dataset.data = [];
-    });
+	configs.forEach( (config) => {
+		config.data.labels = [];
+		config.data.datasets.forEach( (dataset) => {
+			dataset.data = [];
+		});
+	});
 }
 
 
-var charts = []
+var charts = [];
+var configs = [];
 $(document).ready(() => {
 	var alt_ctx = $("#alt_canvas")[0].getContext('2d');
 	var alt_chart = new Chart(alt_ctx, alt_config);
 	var gyro_ctx = $("#gyro_canvas")[0].getContext('2d');
     var gyro_chart = new Chart(gyro_ctx, gyro_config);
 
+	configs.push(alt_chart, gyro_chart);
 	charts.push(alt_chart, gyro_chart);
 })

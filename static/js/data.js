@@ -42,12 +42,16 @@ function set_data_mode() {
 	console.log(data_type, filename);
 }
 
+function start_requesting_data() {
+	clear_charts();
+	socket.on("receive_data", receive_data);
+	setTimeout(request_data, refresh_period);
+}
+
 $(document).ready(() => {
 	socket = io();
 	socket.on("connect", () => {
 		console.log("Socketio connected.");
 		show_settings_modal();
-		//socket.on("receive_data", receive_data);
-		//setTimeout(request_data, refresh_period);
 	});
 })
