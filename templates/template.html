@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta name="viewport" content="width=device-width, initial=scale=1.0">
-    <script src="{{ url_for('static', filename='js/jquery/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/socketio/socket.io.slim.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/chartjs/Chart.bundle.min.js') }}"></script>
-    <link rel="stylesheet"
-        href="{{ url_for('static', filename='styles/main.css') }}">
-    {% block script %}{% endblock %}
-</head>
+  <head>
+	<meta name="viewport" content="width=device-width, initial=scale=1.0">
+	<link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}">
+	<script src="{{ url_for('static', filename='js/jquery/jquery.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/socketio/socket.io.slim.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/chartjs/Chart.bundle.min.js') }}"></script>
+	
+	<link rel="stylesheet" href="{{ url_for('static', filename='styles/bootstrap/bootstrap.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">
+	{% block script %}{% endblock %}
+  </head>
 
-<body>
-    {% block content %}{% endblock %}
-</body>
+  <body>
+	{% include 'components/navbar.html' %}
+	{% block content %}{% endblock %}
+	<script src="{{ url_for('static', filename='js/bootstrap/bootstrap.bundle.min.js') }}"></script>
+  </body>
 
-<footer>
-    {% block foot %}{% endblock %}
-</footer>
+  <footer>
+	{% block foot %}{% endblock %}
+  </footer>
 </html>

@@ -1,18 +1,27 @@
 {% extends "template.html" %}
 
 {% block script %}
+<title>Telemetry</title>
 <script src="{{ url_for('static', filename='js/data.js') }}"></script>
 <script src="{{ url_for('static', filename='js/charting.js') }}" defer></script>
-<script src="{{ url_for('static', filename='js/graphing.js') }}" defer></script>
 {% endblock %}
 
 {% block content %}
+{% include "components/settings_modal.html" %}
 <div id="content-wrapper">
-    <div id="chart-wrapper">
-        <canvas id="canvas"></canvas>
-    </div>
+  {% with canvas_id="gyro_canvas",test=0 %}
+  {% include "components/graph_canvas.html" %}
+  {% endwith %}
+  {% with canvas_id="alt_canvas" %}
+  {% include "components/graph_canvas.html" %}
+  {% endwith %}
+  <!--
+  <div id="chart-wrapper">
+    <canvas id="gyro_canvas"></canvas>
+  </div>
+  -->
 </div>
-<button onclick="clear_chart()">Clear Data</button>
+<button onclick="clear_charts()">Clear Data</button>
 {% endblock %}
 
 

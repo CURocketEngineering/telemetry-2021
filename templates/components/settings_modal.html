@@ -1,0 +1,29 @@
+<div class="modal" tabindex="-1" role="dialog" id="settings_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Telemetry Setup</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		<form action="/settings" method="post" enctype="multipart/form-data">
+		  <div class="form-group">
+			<label for="exampleFormControlInput1">Data File</label>
+			<input name="file" type="file" class="form-control" id="exampleFormControlInput1" placeholder="live.json">
+		  </div>
+		  <div class="form-group">
+			<label for="exampleFormControlSelect1">Data Type</label>
+			<select name="data_type" class="form-control" id="exampleFormControlSelect1">
+			  <option>Demo Data</option>
+			  <option>Explore Data</option>
+			  <option>Live Telemetry</option>
+			</select>
+		  </div>
+		  <button type="submit" class="btn btn-primary">Start</button>
+		</form>
+      </div>
+    </div>
+  </div>
+</div>

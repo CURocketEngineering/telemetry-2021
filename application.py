@@ -15,6 +15,9 @@ from src import data
 from threading import Thread
 
 
+UPLOAD_FOLDER = '/path/to/the/uploads'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
 app = Flask(__name__, template_folder="./templates", static_folder="./static")
 app.secret_key = b"telemetry_secret_key"
 socketio = SocketIO(app, logger=True)
@@ -31,6 +34,12 @@ def index():
         "pages/index.html",
         context={}
     )
+
+@app.route("/settings", methods=["POST"])
+def change_settings():
+    print(request.data)
+    print(request.form)
+    return ('', 204)
 
 @socketio.on("connected")
 def connect_user():

@@ -24,4 +24,5 @@ html, body {
 #chart-wrapper {
     width: 100%;
     max-width: 800px;
+	display: grid;
 }

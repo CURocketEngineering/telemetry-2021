@@ -40,7 +40,6 @@ class DataHandler:
             if self.is_sim:
                 r_data = self.data.copy()
                 if empty:
-                    print("emptying")
                     self.data = deepcopy(empty_data)
             else:
                 # TODO else

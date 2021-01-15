@@ -1,4 +1,4 @@
-var chart_config = {
+var gyro_config = {
     type: 'line',
     data: {
         datasets: [
@@ -7,18 +7,21 @@ var chart_config = {
                 borderColor: 'rgba(255,0,0,0.8)',
                 backgroundColor: 'rgba(255,0,0,0.8)',
                 fill: false,
+				pointRadius: 0,
             },
             {
                 label: 'Y',
                 borderColor: 'rgba(0,255,0,0.8)',
                 backgroundColor: 'rgba(0,255,0,0.8)',
                 fill: false,
+				pointRadius: 0,
             },
             {
                 label: 'Z',
                 borderColor: 'rgba(0,0,255,0.8)',
                 backgroundColor: 'rgba(0,0,255,0.8)',
                 fill: false,
+				pointRadius: 0,
             },
         ]
     },
@@ -26,47 +29,99 @@ var chart_config = {
         responsive: true,
         title:{
             display: true,
-            text: 'Test chart'
+            text: 'Gyroscopes'
         },
         scales: {
             xAxes: [{
                 display: true,
                 scaleLabel: {
                     display: true,
-                    labelString: 'Time'
+                    labelString: 'Timestamp'
                 }
             }],
             yAxes: [{
                 display: true,
                 scaleLabel: {
                     display: true,
-                    labelString: 'Value'
+                    labelString: 'Gyro-value'
                 }
             }]
         }
     }
 };
-var label = 0;
-
-window.onload = function() {
-    var ctx = document.getElementById('canvas').getContext('2d');
-    window.test_chart = new Chart(ctx, chart_config);
-}
-
-function add_data_to_chart(data) {
-    if (data.sensors.gyro.x.length == 0) {
-        return;
+var alt_config = {
+    type: 'line',
+    data: {
+        datasets: [
+            {
+                label: 'Altitude',
+                borderColor: 'rgba(255,0,0,0.8)',
+                backgroundColor: 'rgba(255,0,0,0.8)',
+                fill: false,
+				pointRadius: 0,
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        title:{
+            display: true,
+            text: 'Altitude'
+        },
+        scales: {
+            xAxes: [{
+                display: true,
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Timestamp'
+                }
+            }],
+            yAxes: [{
+                display: true,
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Altitude'
+                }
+            }]
+        }
     }
-    chart_config.data.labels.push(label++);
-    chart_config.data.datasets[0].data.push(data.sensors.gyro.x[0]);
-    chart_config.data.datasets[1].data.push(data.sensors.gyro.y[0]);
-    chart_config.data.datasets[2].data.push(data.sensors.gyro.z[0]);
-    window.test_chart.update();
+};
+
+function add_data_to_charts(data) {
+	for (let i = 0; i < data.time.length; i++) {
+		// Gyroscope
+		gyro_config.data.labels.push(data.time[i]);
+		gyro_config.data.datasets[0].data.push(data.sensors.gyro.x[i]);
+		gyro_config.data.datasets[1].data.push(data.sensors.gyro.y[i]);
+		gyro_config.data.datasets[2].data.push(data.sensors.gyro.z[i]);
+
+		// Altitude
+		alt_config.data.labels.push(data.time[i]);
+		alt_config.data.datasets[0].data.push(data.sensors.alt[i]);
+	}
+	if (data.time.length > 0){
+		console.log(charts);
+		charts.forEach( (chart) => {
+			console.log(chart);
+			chart.update();
+		});
+	}
 }
 
-function clear_chart() {
-    chart_config.data.labels = [];
-    chart_config.data.datasets.forEach( (dataset) => {
+function clear_charts() {
+    gyro_config.data.labels = [];
+    gyro_config.data.datasets.forEach( (dataset) => {
         dataset.data = [];
     });
 }
+
+
+var charts = []
+$(document).ready(() => {
+	var alt_ctx = $("#alt_canvas")[0].getContext('2d');
+	var alt_chart = new Chart(alt_ctx, alt_config);
+	var gyro_ctx = $("#gyro_canvas")[0].getContext('2d');
+    var gyro_chart = new Chart(gyro_ctx, gyro_config);
+
+	charts.push(alt_chart, gyro_chart);
+})
