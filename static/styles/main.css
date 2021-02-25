@@ -1,0 +1,28 @@
+canvas {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+html, body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+#content-wrapper {
+    margin: 0;
+    padding: 0;
+    height: 80%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#chart-wrapper {
+    width: 100%;
+    max-width: 800px;
+	display: grid;
+}

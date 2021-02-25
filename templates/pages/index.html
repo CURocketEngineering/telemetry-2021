@@ -1,18 +1,23 @@
 {% extends "template.html" %}
 
-
 {% block script %}
+<title>Telemetry</title>
 <script src="{{ url_for('static', filename='js/data.js') }}"></script>
-<script src="{{ url_for('static', filename='js/graphing.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/charting.js') }}" defer></script>
 {% endblock %}
 
 {% block content %}
-<p id="testing">
-</p>
+{% include "components/settings_modal.html" %}
+{% include "components/telemetry_actions_modal.html" %}
+<div id="content-wrapper">
+  {% with canvas_id="gyro_canvas",test=0 %}
+  {% include "components/graph_canvas.html" %}
+  {% endwith %}
+  {% with canvas_id="alt_canvas" %}
+  {% include "components/graph_canvas.html" %}
+  {% endwith %}
+</div>
 {% endblock %}
-
 
 {% block foot %}
-
 {% endblock %}
-
