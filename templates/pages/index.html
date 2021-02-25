@@ -8,6 +8,7 @@
 
 {% block content %}
 {% include "components/settings_modal.html" %}
+{% include "components/telemetry_actions_modal.html" %}
 <div id="content-wrapper">
   {% with canvas_id="gyro_canvas",test=0 %}
   {% include "components/graph_canvas.html" %}

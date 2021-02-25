@@ -1,3 +1,5 @@
+digi-xbee
 flask
 flask_socketio
 werkzeug
+

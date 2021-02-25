@@ -24,6 +24,7 @@ app.config['UPLOAD_FOLDER'] = "/uploads"
 socketio = SocketIO(app, logger=True)
 
 rocket_data = data.DataHandler(False, is_sim=True)
+radio_comms = None
 update_data_thread = None
 
 
@@ -64,9 +65,19 @@ def change_settings():
         else:
             print("NO FILE!")            
             pass        
+    elif request.form["data_type"] == "Live Telemetry":
+        print("Starting live data")
+        rocket_data = data.DataHandler(True, is_sim=False)
+         
+        data.should_kill_thread = True
+        while data.should_kill_thread and update_data_thread != None:
+            pass
+        data.should_kill_thread = False
+        print("Killed old thread")
+        update_data_thread = Thread(target=data.update_data, args=(rocket_data,))
+        update_data_thread.daemon = True
+        update_data_thread.start()
     else:
-        # TODO: Live data
-        # data.DataHandler(True)
         pass
     return ('', 204)
 
@@ -81,6 +92,23 @@ def request_data():
     d = rocket_data.get_data()
     emit("receive_data", d)
 
+@socketio.on("halt")
+def request_halt():
+    print("HALT!")
+    if radio_comms:
+        radio_comms.halt()
+
+@socketio.on("resume")
+def request_halt():
+    print("RESUME!")
+    if radio_comms:
+        radio_comms.resume()
+
+@socketio.on("demo_simulation")
+def request_demo():
+    print("DEMO!")
+    if radio_comms:
+        radio_comms.demo_simulation()
 
 if __name__ == "__main__":
     socketio.run(app, debug=True)

@@ -32,6 +32,25 @@ function hide_settings_modal() {
 	);
 }
 
+function show_telemetry_actions_modal() {
+	$("#telemetry_actions_modal").modal(
+		{
+			show: true,
+			focus: true,
+			keyboard: true,
+		}
+	);
+}
+
+function hide_telemetry_actions_modal() {
+	$("#telemetry_actions_modal").modal(
+		{
+			show: false,
+			keyboard: true,
+		}
+	);
+}
+
 var data_type = "live"
 function set_data_type(t) {
 	data_type = t;
@@ -46,6 +65,18 @@ function start_requesting_data() {
 	clear_charts();
 	socket.on("receive_data", receive_data);
 	setTimeout(request_data, refresh_period);
+}
+
+function halt() {
+	socket.emit("halt");
+}
+
+function resume() {
+	socket.emit("resume");
+}
+
+function demo_simulation() {
+	socket.emit("demo_simulation");
 }
 
 $(document).ready(() => {

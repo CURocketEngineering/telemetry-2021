@@ -4,8 +4,9 @@ from threading import Lock
 from copy import deepcopy
 
 DATAFILE = "uploads/sim_irec2019.json"
-SIM_DT = .25
+SIM_DT = .02
 
+# TODO, read and send more data types
 empty_data = {
     "sensors": {
         "gyro": {
