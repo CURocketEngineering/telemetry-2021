@@ -24,8 +24,8 @@ app.config['UPLOAD_FOLDER'] = "/uploads"
 socketio = SocketIO(app, logger=True)
 
 rocket_data = data.DataHandler(False, is_sim=True)
-radio_comms = None
 update_data_thread = None
+rocket_data_thread = None
 
 
 @app.route("/")
@@ -95,20 +95,17 @@ def request_data():
 @socketio.on("halt")
 def request_halt():
     print("HALT!")
-    if radio_comms:
-        radio_comms.halt()
+    rocket_data.halt()
 
 @socketio.on("resume")
 def request_halt():
     print("RESUME!")
-    if radio_comms:
-        radio_comms.resume()
+    rocket_data.resume()
 
 @socketio.on("demo_simulation")
 def request_demo():
     print("DEMO!")
-    if radio_comms:
-        radio_comms.demo_simulation()
+    rocket_data.demo_simulation()
 
 if __name__ == "__main__":
     socketio.run(app, debug=True)

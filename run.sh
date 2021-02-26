@@ -1,2 +1,2 @@
 #!/bin/bash
-python application.py
+sudo python application.py
