@@ -6,6 +6,7 @@ import sys
 from time import time as unixtimestamp
 from json import loads, dumps
 
+from copy import deepcopy
 
 class Antenna:
     def __init__(
@@ -29,10 +30,11 @@ class Antenna:
 
             try:
                 self.device.open()
-            except:
+            except Exception as e:
+                print(e)
                 self.active = False
             try:
-                add_64 = (FalseXBee64BitAddress.from_hex_string(
+                add_64 = (XBee64BitAddress.from_hex_string(
                     remote_address
                 ))
                 self.remote_device = RemoteXBeeDevice(self.device, add_64)
@@ -42,6 +44,10 @@ class Antenna:
         else:
             self.active = False
             self.device = None
+
+        self.ready_data = {}
+        self.cur_data = {}
+        self.cur_uts = 0
 
     def find_port(self):
         ports = prtlst.comports()
@@ -77,7 +83,6 @@ class Antenna:
                     return None
             self.last_time_sent = time
 
-        print("SENDING")
         self.verbose_print((self.active, data))
         if self.active:
             try:
@@ -109,76 +114,53 @@ class Antenna:
 
     def read_time(self, time):
         if not self.active:
+            print("NOT ACTIVE")
             return "{}"
-        return self.device.read_data(time)
-
-    def send_halt():
-        return
-
-    def send_arm():
-        return
-
-    def start_sim():
-        return
-
-if __name__ == "__main__":
-    import json
-    print("DEBUG XBEE")
-    mode = input("[S]end or [R]ecieve? ")
-    data = {
-        "sensors": {
-            "gyro": {
-                "x": -5.376751,
-                "y": 2.096962,
-                "z": -0.705878},
-            "acc": {
-                "x": -1.020873,
-                "y": -0.033887,
-                "z": -0.028862
-            },
-            "mag": {
-                "x": -0.082264,
-                "y": 0.071932,
-                "z": 0.040348
-            },
-            "lat": 0,
-            "lon": 0,
-            "pitch": 1.527222,
-            "yaw": -0.960689,
-            "roll": -2.276288,
-            "alt": 1398.361,
-            "pres": 86101.02,
-            "hum": 12.02832,
-            "temp": 42.3
-        },
-        "time": 1250310
-    }
-    if "r" in mode.lower():
-        ant = Antenna(verbose=True, remote_address="a")
-        print(f"XBEE is active: {ant.active}")
-        cur_data = {}
-        cur_time = 0
+        new_data = self.device.read_data(time)
+        try:
+            new_data_processed = loads(new_data.data.decode())
+        except Exception as e:
+            print(e)
+            return
         key_name = ""
-        val = ""
-        uts = 0
-        while True:
-            data = json.loads(ant.read_time(1000).data.decode())
-            for key in data:
-                if "uts" in key:
-                    uts = data[key]
-                else:
-                    key_name = key
-                    val = data[key]
-            if uts not in cur_data:
-                cur_data[uts] = {
-                    key: val
-                }
-                #print(f"\n >>{uts}: {len(cur_data[uts])}", end="\r")
+        val = 0
+        for key in new_data_processed:
+            if "uts" in key:
+                self.cur_uts = new_data_processed[key]
             else:
-                cur_data[uts][key] = val
-                print(f" >>{uts}: {cur_data[uts]}", end="\r")
-        
-    else:
-        #ant = Antenna(remote_address="0013A20041957215", verbose=True)
-        ant = Antenna(remote_address="0013A2004195721E", verbose=True)
-        ant.send(data, skip_time=2.5)
+                key_name = key
+                val = new_data_processed[key]
+        if self.cur_uts in self.cur_data:
+            self.cur_data[self.cur_uts][key_name] = val
+        if self.cur_uts not in self.cur_data:
+            self.ready_data.update(self.cur_data)
+            self.cur_data = {
+                self.cur_uts: {
+                    key_name: val
+                }
+            }
+
+    def send_halt(self):
+        return
+
+    def send_arm(self):
+        return
+
+    def start_sim(self):
+        return
+
+    def get_finished_data(self):
+        finished_data = deepcopy(self.ready_data)
+        if finished_data == {}:
+            return {}
+        self.ready_data = {}
+        if "_time" in finished_data:
+            finished_data["time"] = finished_data["_time"]
+        finished_data["sensors"] = {"gyro": {}}
+        finished_data["sensors"]["alt"] = finished_data.get("sensors_alt", 0)
+        for i in ["x", "y", "z"]:
+            finished_data["sensors"]["gyro"][i] = finished_data.get(f"gyro_{i}", 0)
+        return finished_data
+
+#ant = Antenna(remote_address="0013A20041957215", verbose=True)
+#ant = Antenna(remote_address="0013A2004195721E", verbose=True)
