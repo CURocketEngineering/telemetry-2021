@@ -4,6 +4,8 @@ Web app for CURE telemetry.
 All web-related dependencies are built-in, but python dependencies should be
 installed with a virtual environment as shown below. 
 
+![Explore Data Demo](static/media/explore_demo.png)
+
 ### TODO
 #### Features
 * [x] View recorded data
