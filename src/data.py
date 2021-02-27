@@ -100,12 +100,10 @@ class DataHandler:
             try:
                 self.data_lock.acquire()
                 d = self.radio.get_finished_data()
-                print("CUR DATA", d)
                 if d:
-                    print(d)
                     self.update_readings_from_dict(d)
             except Exception as e:
-                print("ERROR", e)
+                print("ERROR", e)  # Error likely timeout
             finally:
                 self.data_lock.release()
         else:
@@ -154,13 +152,18 @@ def update_data(dataobj):
                 kill_radio = True
             return
 
-
 def radio_update(dataobj):
+    """
+    Used to ping the radio independently of the data update loop.
+    """
     global kill_radio
     while True:
         try:
             dataobj.data_lock.acquire()
-            dataobj.radio.read_time(1000)
+            dataobj.radio.read_time(0)  # Time is in seconds!
+        except Exception as e:
+            # Error is likely a read_time (read_data) timeout
+            pass
         finally:
             dataobj.data_lock.release()
         if kill_radio:
