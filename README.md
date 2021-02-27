@@ -8,7 +8,7 @@ installed with a virtual environment as shown below.
 #### Features
 * [x] View recorded data
 * [x] Simulate recorded data
-* [ ] View live data
+* [x] View live data
 * [ ] Send commands to the system
 #### Misc.
 * [ ] Configuration within web app
