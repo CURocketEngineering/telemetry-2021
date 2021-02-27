@@ -154,6 +154,8 @@ class Antenna:
         if finished_data == {}:
             return {}
         self.ready_data = {}
+        time_key = max(finished_data.keys())
+        finished_data = finished_data[time_key]
         if "_time" in finished_data:
             finished_data["time"] = finished_data["_time"]
         finished_data["sensors"] = {"gyro": {}}
