@@ -71,6 +71,18 @@ function halt() {
 	socket.emit("halt");
 }
 
+function arm() {
+	socket.emit("arm");
+}
+
+function eject1() {
+	socket.emit("eject1");
+}
+
+function eject2() {
+	socket.emit("eject2");
+}
+
 function resume() {
 	socket.emit("resume");
 }

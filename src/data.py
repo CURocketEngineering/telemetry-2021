@@ -35,7 +35,9 @@ class DataHandler:
         self._f = None
         self.radio = None
         if use_comm:
-            self.radio = radio.Antenna(remote_address="a")
+            self.radio = radio.Antenna(remote_address="0013A20041957215")
+            # remot_address will need to be changed with different radios,
+            # this should be moved to the gui
         else:
             self._f = open(filename, "r")
         self.data = deepcopy(empty_data)
@@ -121,13 +123,26 @@ class DataHandler:
         self.data["sensors"]["alt"].append(newjson["sensors"]["alt"])
         self.data["time"].append(newjson["time"])
 
-    def halt():
+    def halt(self):
+        if self.radio:
+            self.radio.send_halt()
+
+    def arm(self):
+        if self.radio:
+            self.radio.send_arm()
+
+    def eject1(self):
+        if self.radio:
+            self.radio.send_eject(1)
+
+    def eject2(self):
+        if self.radio:
+            self.radio.send_eject(2)
+
+    def resume(self):
         return
 
-    def resume():
-        return
-
-    def demo_simluation():
+    def demo_simluation(self):
         return
 
 

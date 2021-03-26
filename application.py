@@ -108,9 +108,29 @@ def request_halt():
     """
     HALT state change to the rocket.
     """
-    print("HALT!")
     rocket_data.halt()
 
+@socketio.on("arm")
+def request_arm():
+    """
+    RESUME state change to the rocket.
+    """
+    rocket_data.arm()
+
+@socketio.on("eject1")
+def request_arm():
+    """
+    RESUME state change to the rocket.
+    """
+    rocket_data.eject1()
+    
+@socketio.on("eject2")
+def request_arm():
+    """
+    RESUME state change to the rocket.
+    """
+    rocket_data.eject2()
+    
 @socketio.on("resume")
 def request_resume():
     """

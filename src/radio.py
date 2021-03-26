@@ -8,6 +8,10 @@ from json import loads, dumps
 
 from copy import deepcopy
 
+
+SECRET_KEY = "CURE"
+
+
 class Antenna:
     def __init__(
             self,
@@ -86,6 +90,14 @@ class Antenna:
         self.verbose_print((self.active, data))
         if self.active:
             try:
+                data["uts"] = time
+                to_send = dumps(data).encode()
+                self.device.send_data_async(
+                    self.remote_device,
+                    to_send
+                )
+                """
+            try:
                 if type(data) == dict:
                     for key in data:
                         parent = "" if data_key == None else data_key
@@ -104,6 +116,7 @@ class Antenna:
                         self.remote_device,
                         to_send
                     )
+                """
             except Exception as e:
                 self.verbose_print(f"COULDN'T SEND {data}, ERROR {e}")
         return None
@@ -141,10 +154,16 @@ class Antenna:
             }
 
     def send_halt(self):
-        return
+        print("[send_halt] sending halt")
+        self.send({"key": SECRET_KEY, "command": "h"})
 
     def send_arm(self):
-        return
+        print("[send_arm] sending arm")
+        self.send({"key": SECRET_KEY, "command": "a"})
+
+    def send_eject(self, para):
+        print("[send_eject] sending eject for", para)
+        self.send({"key": SECRET_KEY, "command": "e"+str(para)})
 
     def start_sim(self):
         return
