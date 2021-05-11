@@ -11,7 +11,7 @@ installed with a virtual environment as shown below.
 * [x] View recorded data
 * [x] Simulate recorded data
 * [x] View live data
-* [ ] Send commands to the system
+* [x] Send commands to the system
 #### Misc.
 * [ ] Configuration within web app
 * [ ] Reset button within web app
